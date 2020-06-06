@@ -6,7 +6,7 @@ const initialMovieState ={
     favourites:[],
     showFavourites:false
 }
-export default function movies(state=initialMovieState,action)
+export default function movies(state=initialMoviesState,action)
 {
     // if(action.type === ADD_MOVIES)
     // {
@@ -60,4 +60,24 @@ export default function movies(state=initialMovieState,action)
 
 }
 
+const initialSearchState={
+    result:{}
+};
+export function search (state=initialMoviesState,action)
+{
+    return state;
+}
+const initialRootState =
+{
+    movies:initialMovieState,
+    search:initialSearchState
+
+}
+export default function rootReducer(state=initialRootState,action)
+{
+    return {
+        movies:movies(state.movies,action),
+        search: search(state.search,action)
+    }
+}
 // movies(undefined,{} )
