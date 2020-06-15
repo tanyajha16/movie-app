@@ -1,13 +1,14 @@
+import {combineReducers} from 'redux';
+import {ADD_MOVIES,ADD_TO_FAVOURITES,REMOVE_FROM_FAVOURITES,SET_SHOW_FAVOURITES,ADD_MOVIE_TO_LIST,ADD_SEARCH_RESULT} from '../actions';
 
-import {ADD_MOVIES,ADD_TO_FAVOURITES,REMOVE_FROM_FAVOURITES,SET_SHOW_FAVOURITES} from '../actions';
-
-const initialMovieState ={
+const initialMoviesState ={
     list:[],
     favourites:[],
     showFavourites:false
 }
-export default function movies(state=initialMoviesState,action)
+export function movies(state=initialMoviesState,action)
 {
+    console.log('MOVIES_REDUCER');
     // if(action.type === ADD_MOVIES)
     // {
         // return action.movies;
@@ -52,7 +53,16 @@ export default function movies(state=initialMoviesState,action)
                                ...state,
                                showFavourites:action.val
                            }
-                       }
+                        }
+                           case ADD_MOVIE_TO_LIST:
+                               {
+                                   return{
+                                       ...state,
+                                       list:[action.movie,...state.list]
+
+                                   }
+                               }
+                       
                     
             default:
             return state;
@@ -65,19 +75,36 @@ const initialSearchState={
 };
 export function search (state=initialMoviesState,action)
 {
-    return state;
+    
+    // console.log('SEARCH_REDUCER');
+    // return state;
+    switch(action.type)
+    {
+        case ADD_SEARCH_RESULT:
+        return {
+         ...state,
+         result:action.movie
+        }
+        default:
+            return state;
+    }
 }
 const initialRootState =
 {
-    movies:initialMovieState,
+    movies:initialMoviesState,
     search:initialSearchState
 
 }
-export default function rootReducer(state=initialRootState,action)
-{
-    return {
-        movies:movies(state.movies,action),
-        search: search(state.search,action)
-    }
-}
+// export default function rootReducer(state=initialRootState,action)
+// {
+//     return {
+//         movies:movies(state.movies,action),
+//         search: search(state.search,action)
+//     }
+// }
 // movies(undefined,{} )
+
+export default combineReducers({
+movies:movies,
+search:search
+});
